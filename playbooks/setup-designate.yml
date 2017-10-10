@@ -1,0 +1,68 @@
+# Copyright 2014-2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+---
+- name: Install Designate
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Add designate role
+      blockinfile:
+        dest: /opt/rpc-openstack/ansible-role-requirements.yml
+        block: |
+          - name: os_designate
+            scm: git
+            src: https://github.com/rcbops/openstack-ansible-os_designate.git
+            version: 1e423f217aed465aa67a4070661f78b813c6a353
+      register: role_add
+      tags: 
+        - designate_setup
+
+    - name: Install container definitions
+      copy:
+        src: ../files/inventory/designate.yml
+        dest: /etc/openstack_deploy/env.d/designate.yml
+      tags: 
+        - designate_setup
+
+    - name: Install designate group variables
+      copy: 
+        src: /opt/rpc-designate/playbooks/group_vars/designate_all.yml
+        dest: /opt/rpc-openstack/group_vars/designate_all.yml
+      tags: 
+        - designate_setup
+
+    - name: Read user secrets file
+      shell: "grep '^[a-zA-Z]' /etc/openstack_deploy/user_osa_secrets.yml"
+      register: user_secrets
+      tags: 
+        - designate_setup
+
+    - name: Add missing secrets
+      lineinfile:
+        dest: "/etc/openstack_deploy/user_osa_secrets.yml"
+        line: "{{ item }}"
+      with_items: "{{ secrets }}"
+      when: user_secrets.stdout.find("{{ item }}") == -1
+      tags: 
+        - designate_setup
+
+    - name: Update password file
+      shell: /opt/rpc-openstack/openstack-ansible/scripts/pw-token-gen.py --file /etc/openstack_deploy/user_osa_secrets.yml
+  
+  vars:
+    secrets:
+      - "designate_service_password: "
+      - "designate_rabbitmq_password: "
+      - "designate_galera_password: "
+
