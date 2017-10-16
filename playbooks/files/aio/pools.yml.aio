@@ -1,0 +1,22 @@
+# Pool Definition
+designate_pools_yaml:
+  - name: "default"
+    description: Default BIND9 Pool
+    attributes: {}
+    ns_records:
+      - hostname: ns1.openstack.local.
+        priority: 1
+    nameservers:
+      - host: "{{ hostvars[groups['hosts'][0]]['ansible_host'] }}"
+        port: 53
+    targets:
+      - type: bind9
+        description: BIND9 Server
+        masters:
+          - host: "{{ hostvars[groups['designate_all'][0]]['ansible_host'] }}"
+            port: 5354
+        options:
+          host: "{{ hostvars[groups['hosts'][0]]['ansible_host'] }}"
+          port: 53
+          rndc_host: "{{ hostvars[groups['hosts'][0]]['ansible_host'] }}"
+          rndc_port: 953

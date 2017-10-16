@@ -1,0 +1,44 @@
+# Copyright 2014-2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# With the apt package it will install a rndc key so we dont need to generate one
+
+---
+- name: Install Bind
+  apt:
+    name: bind9
+    state: present
+
+- name: Install named configuration file
+  template: 
+    src: ../files/aio/named.conf.j2
+    dest: /etc/bind/named.conf.options
+    owner: root
+    group: root
+
+- name: Create needed directories
+  file: 
+    name: "{{ item }}"
+    group: "bind"
+    mode: 0775
+    state: directory
+  with_items:
+    - "/var/cache/bind/data"
+    - "/var/cache/bind/dynamic"
+
+- name: Start bind 
+  service: 
+    name: bind9
+    enabled: yes
+    state: started
