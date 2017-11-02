@@ -67,9 +67,4 @@ haproxy_service_configs:
       haproxy_balance_type: http
       haproxy_backend_options:
         - "httpchk GET /"
-  - service:
-      haproxy_service_name: designate_mdns
-      haproxy_backend_nodes: "{{ groups['designate_all'] | default([]) }}"
-      haproxy_port: 5354
-      haproxy_balance_type: tcp
 
