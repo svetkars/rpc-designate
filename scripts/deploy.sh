@@ -45,6 +45,9 @@ run_ansible ${DESIGNATE_DEPLOY_OPS} -e "designate_developer_mode=True" /opt/rpc-
 # add service to haproxy
 run_ansible ${DESIGNATE_DEPLOY_OPS} haproxy-install.yml 
 
+# open ports for designate-mdns
+run_ansible ${DESIGNATE_DEPLOY_OPS} /opt/rpc-designate/playbooks/setup-infra-firewall-mdns.yml
+
 # add filebeat to service so we get logging
 cd /opt/rpc-openstack/
 run_ansible /opt/rpc-openstack/rpcd/playbooks/filebeat.yml --limit designate_all
