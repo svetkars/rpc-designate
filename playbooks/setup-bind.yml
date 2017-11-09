@@ -27,12 +27,12 @@
   tasks:
     - name: Create designate folder in container
       file:
-        name: /etc/designate
+        name: /etc/bind
         mode: 0775
         state: directory
 
     - name: Install rndc.key to designate containers
       copy:
         src: /etc/bind/rndc.key
-        dest: /etc/designate/rndc.key
+        dest: /etc/bind/rndc.key
 

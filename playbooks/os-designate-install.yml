@@ -22,7 +22,7 @@
   tasks:
     - name: Install git
       apt: 
-        name: git
+        name: "{{ item }}"
         state: installed
 
 - name: Install Designate Server
