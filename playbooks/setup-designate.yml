@@ -23,7 +23,7 @@
           - name: os_designate
             scm: git
             src: https://github.com/rcbops/openstack-ansible-os_designate.git
-            version: 1e423f217aed465aa67a4070661f78b813c6a353
+            version: newton-designate
       register: role_add
       tags: 
         - designate_setup
