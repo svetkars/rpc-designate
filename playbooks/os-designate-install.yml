@@ -16,14 +16,17 @@
   hosts: "{{ lxc_host_group | default('lxc_hosts')}}"
   gather_facts: "{{ gather_facts | default(True) }}"
 
-- name: Install Git in the containers
+- name: Install additional packages
   hosts: designate_all
   user: root
   tasks:
-    - name: Install git
+    - name: Install packages
       apt: 
-        name: git
+        name: "{{ item }}"
         state: installed
+      with_items:
+        - "git"
+        - "bind9utils"
 
 - name: Install Designate Server
   hosts: designate_all
