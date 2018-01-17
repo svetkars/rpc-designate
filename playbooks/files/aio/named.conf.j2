@@ -1,6 +1,6 @@
 
 options {
-	listen-on port 53 { {{hostvars[groups['designate_all'][0]]['ansible_host']}}; };
+	listen-on port 53 { {{hostvars[groups['hosts'][0]]['ansible_host']}}; };
 	directory 	"/var/cache/bind";
 	dump-file 	"/var/cache/bind/data/cache_dump.db";
 	statistics-file "/var/cache/bind/data/named_stats.txt";
@@ -8,7 +8,7 @@ options {
 	allow-query     { any; };
         allow-notify    { {{hostvars[groups['designate_all'][0]]['ansible_host']}}; };
 
-	recursion yes;
+	recursion no;
 
 	dnssec-enable yes;
 	dnssec-validation yes;
