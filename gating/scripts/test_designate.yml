@@ -1,0 +1,98 @@
+---
+# Copyright 2014-2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Test Designate
+  hosts: localhost
+  user: root
+  gather_facts: false
+  vars:
+    env:
+      OS_ENDPOINT_TYPE: internalURL
+      OS_INTERFACE: internalURL
+      OS_USERNAME: admin
+      OS_PASSWORD: "{{ keystone_auth_admin_password }}"
+      OS_PROJECT_NAME: admin
+      OS_TENANT_NAME: admin
+      OS_AUTH_URL: "http://{{ internal_lb_vip_address }}:5000/v3"
+      OS_NO_CACHE: 1
+      OS_USER_DOMAIN_NAME: Default
+      OS_PROJECT_DOMAIN_NAME: Default
+      OS_REGION_NAME: RegionOne
+      OS_IDENTITY_API_VERSION: 3
+      OS_AUTH_VERSION: 3
+    internal_lb_vip_address: 172.29.236.100
+    requirements_git_install_branch: stable/newton
+
+  tasks:
+    - name: Gather variables
+      include_vars: "{{ item }}"
+      with_items:
+        - '/etc/ansible/roles/os_designate/defaults/main.yml'
+        - '/opt/rpc-designate/playbooks/group_vars/designate_all.yml'
+    - name: Install pip requirements
+      pip:
+        name: "{{ item }}"
+        state: "{{ designate_pip_package_state }}"
+        extra_args: "-c https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?id={{ requirements_git_install_branch | regex_replace(' #.*$','') }} --isolated"
+      register: install_packages
+      until: install_packages|success
+      retries: 5
+      delay: 2
+      with_items:
+        - "python-designateclient"
+        - "shade"
+
+    - name: Create a domain
+      shell: >
+         openstack zone create --email testing@example.com example.org.
+      environment: "{{ env }}"
+
+    - name: Check for active domain
+      shell: >
+         openstack zone show -f value -c status example.org.
+      environment: "{{ env }}"
+      register: zone_up
+      until: zone_up.stdout == "ACTIVE"
+      retries: 50
+      delay: 10
+
+    - name: Create a domain record
+      shell: >
+        openstack recordset create --records 8.8.8.8 --type A example.org. testing
+      environment: "{{ env }}"
+
+    - name: Check for active domain record
+      shell: >
+         openstack recordset show -f value -c status example.org. testing.example.org.
+      environment: "{{ env }}"
+      register: record_up
+      until: record_up.stdout == "ACTIVE"
+      retries: 50
+      delay: 10
+
+    - name: Delete Domain
+      shell: >
+        openstack zone delete example.org.
+      environment: "{{ env }}"
+
+    - name: Check for domain delete
+      shell: >
+        openstack zone show example.org.
+      environment: "{{ env }}"
+      register: domain_deleted
+      until: domain_deleted.rc == 1
+      failed_when: domain_deleted.rc != 1
+      retries: 10
+      delay: 15
