@@ -32,6 +32,7 @@ fi
 
 # Fix a python-ldap issue
 echo "python-ldap==2.5.2" >> ${OS_BASE_DIR}/openstack-ansible/global-requirement-pins.txt
+echo "Flask!=0.11,<1.0,>=0.10" >> ${OS_BASE_DIR}/openstack-ansible/global-requirement-pins.txt
 
 echo "Flask!=0.11,<1.0,>=0.10" >> ${OS_BASE_DIR}/openstack-ansible/global-requirement-pins.txt
 
