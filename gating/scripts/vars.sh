@@ -13,11 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# The scripts expects the git clone to be at /opt/rpc-designate, so we link
+# the current folder there.
+if [[ "${PWD}" != "/opt/rpc-designate" ]]; then
+  ln -sfn ${PWD} /opt/rpc-designate
+fi
+
 # Use and AIO for gate testing
 export DEPLOY_AIO="yes"
 
 # rpc-openstack base directory
-export OS_BASE_DIR=/opt/rpc-opentack
+export OS_BASE_DIR=/opt/rpc-openstack
 
 # The MY_BASE_DIR needs to be set to ensure that the scripts
 # know it and use this checkout appropriately.
@@ -35,3 +41,4 @@ export ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:--v}
 
 # Pin RPC-Release to 14.3
 export RPC_RELEASE="r14.3.0"
+

@@ -51,6 +51,7 @@
       retries: 5
       delay: 2
       with_items:
+        - "python-openstackclient"
         - "python-designateclient"
         - "shade"
 
