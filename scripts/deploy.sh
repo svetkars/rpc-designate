@@ -31,7 +31,7 @@ ${BASE_DIR}/scripts/bootstrap-ansible.sh
 cd /opt/rpc-openstack/openstack-ansible/playbooks/
 
 # build container
-run_ansible lxc-containers-create.yml --limit designate_all
+run_ansible lxc-containers-create.yml --limit designate_all:lxc_hosts
 run_ansible openstack-hosts-setup.yml --tags openstack_hosts-config
 
 if [[ "${DEPLOY_AIO}" == "yes" ]]; then
