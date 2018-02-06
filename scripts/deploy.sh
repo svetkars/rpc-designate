@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright 2014-2017, Rackspace US, Inc.
+# Copyright 2014-2018, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,6 +37,10 @@ run_ansible openstack-hosts-setup.yml --tags openstack_hosts-config
 if [[ "${DEPLOY_AIO}" == "yes" ]]; then
   run_ansible /opt/rpc-designate/playbooks/setup-bind.yml
   export DESIGNATE_DEPLOY_OPS=${DESIGNATE_DEPLOY_OPS}"-e @/opt/rpc-designate/playbooks/files/aio/pools.yml.aio "
+elif [[ -f "/etc/openstack_deploy/designate_pool.yml" ]]; then
+  # We need to add the desigate pool configuration if it has been created. It is possible to deploy
+  # designate with out this configuration file, but it makes it easier.
+  export DESIGNATE_DEPLOY_OPS=${DESIGNATE_DEPLOY_OPS}"-e @/etc/openstack_deploy/designate_pool.yml "  
 fi
 
 # install designate
@@ -44,6 +48,9 @@ run_ansible ${DESIGNATE_DEPLOY_OPS} -e "designate_developer_mode=True" /opt/rpc-
 
 # add service to haproxy
 run_ansible ${DESIGNATE_DEPLOY_OPS} haproxy-install.yml 
+
+# install rndc key to designate containers
+run_ansible ${DESIGNATE_DEPLOY_OPS} /opt/rpc-designate/playbooks/install_rndc_key.yml
 
 # open ports for designate-mdns
 run_ansible ${DESIGNATE_DEPLOY_OPS} /opt/rpc-designate/playbooks/setup-infra-firewall-mdns.yml
