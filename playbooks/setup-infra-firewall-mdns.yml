@@ -1,4 +1,4 @@
-# Copyright 2014-2017, Rackspace US, Inc.
+# Copyright 2014-2018, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,3 +39,16 @@
     with_items:
       - tcp
       - udp
+
+  - name: save iptables rules (Ubuntu 16.04)
+    command: netfilter-persistent save
+    ignore_errors: yes
+    delegate_to: "{{ physical_host }}"
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
+
+  - name: save iptables rules (CentOS & RHEL)
+    command: service iptables save
+    args:
+      warn: False # since we use save service module doesn't apply
+    delegate_to: "{{ physical_host }}"
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
