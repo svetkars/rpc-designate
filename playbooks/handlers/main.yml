@@ -12,15 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ---
-- name: Install RNDC key for bind
-  hosts: designate_all
-  tasks:
-    - name: Check for presence of rndc.key
-      local_action: stat path=/etc/openstack_deploy/rndc.key
-      register: rndc
-
-    - name: Install rndc key file to designate containers
-      copy:
-        src: /etc/openstack_deploy/rndc.key
-        dest: "{{ designate_pools_yaml[0]['targets'][0]['options']['rndc_key_file'] | default('/etc/designate/rndc.key') }}"
-      when: "{{ designate_pools_yaml[0]['targets'][0]['type'] == 'bind9'}} and rndc.stat.exists == 'True' "
+- name: Restart BIND
+  service:
+    name: bind9
+    state: restarted

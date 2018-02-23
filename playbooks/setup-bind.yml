@@ -1,4 +1,4 @@
-# Copyright 2014-2017, Rackspace US, Inc.
+# Copyright 2014-2018, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,14 +16,34 @@
   hosts: "{{ lxc_host_group | default('lxc_hosts')}}"
   gather_facts: "{{ gather_facts | default(True) }}"
 
-- name: Install Bind Package for AIO
-  hosts: localhost
+- name: Install Bind Package
+  hosts: designate_bind_all
   tasks:
     - include: setup-bind-{{ ansible_pkg_mgr }}.yml
 
+    - name: Pull one of the keys off one of the bind containers
+      fetch:
+        src: /etc/bind/rndc.key
+        dest: /tmp/rndc.key
+        flat: yes
+      run_once: yes
+
+    - name: Distribute key to all bind hosts
+      copy:
+        src: /tmp/rndc.key
+        dest: /etc/bind/rndc.key
+      notify: Restart BIND
+
+  handlers:
+    - name: Restart BIND
+      service:
+        name: bind9
+        state: restarted
+        
+
 - name: Install rndc.key
   hosts: designate_all
-  gather_facts: 
+  gather_facts:
   tasks:
     - name: Create designate folder in container
       file:
@@ -33,16 +53,15 @@
 
     - name: Install rndc.key to designate containers
       copy:
-        src: /etc/bind/rndc.key
+        src: /tmp/rndc.key
         dest: /etc/bind/rndc.key
 
     # The designate container will be missing the rndc executable
-    # this needs to be installed so we can communicate with bind 
+    # this needs to be installed so we can communicate with bind
     # nameservers
     - name: Install packages
-      apt: 
+      apt:
         name: "{{ item }}"
         state: installed
       with_items:
         - "bind9utils"
-
