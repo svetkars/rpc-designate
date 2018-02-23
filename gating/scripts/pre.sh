@@ -25,16 +25,33 @@ echo "+-------------------- START ENV VARS --------------------+"
 env
 echo "+-------------------- START ENV VARS --------------------+"
 
+# If RE_JOB_SCENARIO is set to functional, we need to change it to newton
+if [ ${RE_JOB_SCENARIO} == 'functional' ]; then
+  export RE_JOB_SCENARIO="newton"
+fi
+
+# Setup a few variables specific to the scenario that we are running
+case $RE_JOB_SCENARIO in
+"newton")
+  # Pin RPC-Release to 14.3 for newton
+  export RPC_RELEASE="r14.3.0"
+  export RPC_PRODUCT_RELEASE=${RE_JOB_SCENARIO}
+  export OSA_BASE_DIR=${OS_BASE_DIR}/openstack-ansible
+  ;;
+"pike")
+  # Right now since we don't have the pike code included, just exit
+  exit
+esac
+
 # Clone rpc-openstack
 if [ ! -d ${OS_BASE_DIR} ]; then
   git clone --recursive -b ${RPC_RELEASE} https://github.com/rcbops/rpc-openstack ${OS_BASE_DIR}
 fi
-
-# Fix a python-ldap issue
-echo "python-ldap==2.5.2" >> ${OS_BASE_DIR}/openstack-ansible/global-requirement-pins.txt
-echo "Flask!=0.11,<1.0,>=0.10" >> ${OS_BASE_DIR}/openstack-ansible/global-requirement-pins.txt
-
-echo "Flask!=0.11,<1.0,>=0.10" >> ${OS_BASE_DIR}/openstack-ansible/global-requirement-pins.txt
+ 
+if [ ${RPC_PRODUCT_RELEASE} == "newton" ]; then 
+  echo "python-ldap==2.5.2" >> ${OSA_BASE_DIR}/global-requirement-pins.txt
+  echo "Flask!=0.11,<1.0,>=0.10" >> ${OSA_BASE_DIR}/global-requirement-pins.txt
+fi
 
 # Make sure that we are in the base dir and deploy openstack aio
 cd ${OS_BASE_DIR}
