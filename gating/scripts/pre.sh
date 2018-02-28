@@ -53,24 +53,28 @@ if [ ${RPC_PRODUCT_RELEASE} == "newton" ]; then
   echo "Flask!=0.11,<1.0,>=0.10" >> ${OSA_BASE_DIR}/global-requirement-pins.txt
 fi
 
-# Make sure that we are in the base dir and deploy openstack aio
-cd ${OS_BASE_DIR}
-#${OS_BASE_DIR}/scripts/deploy.sh
-# Setup ansible for the environment
-scripts/bootstrap-ansible.sh
+# If we're not using a pre-saved rpc-openstack image, then deploy the
+# necessary OpenStack infrastructure and services.
+if [[ ! ${RE_JOB_IMAGE} =~ _snapshot$ ]]; then
+  # Make sure that we are in the base dir and deploy openstack aio
+  cd ${OS_BASE_DIR}
+  #${OS_BASE_DIR}/scripts/deploy.sh
+  # Setup ansible for the environment
+  scripts/bootstrap-ansible.sh
 
-# Setup the aio environment
-scripts/bootstrap-aio.sh
+  # Setup the aio environment
+  scripts/bootstrap-aio.sh
 
-cd ${OS_BASE_DIR}/openstack-ansible
-# Configure Host for openstack
-openstack-ansible playbooks/setup-hosts.yml
+  cd ${OS_BASE_DIR}/openstack-ansible
+  # Configure Host for openstack
+  openstack-ansible playbooks/setup-hosts.yml
 
-# Configure Infrastructure for Openstack
-openstack-ansible playbooks/setup-infrastructure.yml
+  # Configure Infrastructure for Openstack
+  openstack-ansible playbooks/setup-infrastructure.yml
 
-# Keystone is the only openstack service that we need installed
-openstack-ansible playbooks/os-keystone-install.yml
+  # Keystone is the only openstack service that we need installed
+  openstack-ansible playbooks/os-keystone-install.yml
+fi
 
 # Install Designate
 cd ${MY_BASE_DIR}
