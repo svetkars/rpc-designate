@@ -40,7 +40,9 @@ case $RE_JOB_SCENARIO in
   ;;
 "pike")
   # Right now since we don't have the pike code included, just exit
+  echo "Pre gate job ended prematurely, pike not yet implemented"
   exit
+  ;;
 esac
 
 # Clone rpc-openstack
