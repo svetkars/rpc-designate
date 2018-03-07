@@ -25,11 +25,21 @@ echo "+-------------------- START ENV VARS --------------------+"
 env
 echo "+-------------------- START ENV VARS --------------------+"
 
-# Run tests
-echo "RUN DESIGNATE. TESTS"
-openstack-ansible ${MY_BASE_DIR}/gating/scripts/test_designate.yml \
-                  -e working_dir=${MY_BASE_DIR} \
-                  -e rpc_release=${RPC_RELEASE} \
-                  ${ANSIBLE_PARAMETERS}
+# Setup a few variables specific to the scenario that we are running
+case $RE_JOB_SCENARIO in
+"newton")
+  # Run tests
+  echo "RUN DESIGNATE. TESTS"
+  openstack-ansible ${MY_BASE_DIR}/gating/scripts/test_designate.yml \
+                    -e working_dir=${MY_BASE_DIR} \
+                    -e rpc_release=${RPC_RELEASE} \
+                    ${ANSIBLE_PARAMETERS}
+  ;;
+"pike")
+  # Right now since we don't have the pike code included, just exit
+  echo "Gate gate job ended prematurely, pike not yet implemented"
+  exit
+  ;;
+esac
 
 echo "Gate job ended"
