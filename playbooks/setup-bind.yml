@@ -36,3 +36,13 @@
         src: /etc/bind/rndc.key
         dest: /etc/bind/rndc.key
 
+    # The designate container will be missing the rndc executable
+    # this needs to be installed so we can communicate with bind 
+    # nameservers
+    - name: Install packages
+      apt: 
+        name: "{{ item }}"
+        state: installed
+      with_items:
+        - "bind9utils"
+

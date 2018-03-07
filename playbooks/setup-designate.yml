@@ -1,4 +1,4 @@
-# Copyright 2014-2017, Rackspace US, Inc.
+# Copyright 2014-2018, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,44 +25,77 @@
             src: https://github.com/rcbops/openstack-ansible-os_designate.git
             version: newton-designate
       register: role_add
+      when: "{{ rpc_release | version_compare('r14', '>=') and rpc_release | version_compare('r15', '<=') }}"
+      tags: 
+        - designate_role_install
+    
+    - name: Install container definitions
+      copy:
+        src: files/inventory/designate.yml
+        dest: /etc/openstack_deploy/env.d/designate.yml
       tags: 
         - designate_setup
 
-    - name: Install container definitions
-      copy:
-        src: ../files/inventory/designate.yml
-        dest: /etc/openstack_deploy/env.d/designate.yml
-      tags: 
+    - name: Install container configuration
+      template:
+        src: templates/designate_config.yml.j2
+        dest: /etc/openstack_deploy/conf.d/designate.yml
+      tags:
         - designate_setup
 
     - name: Install designate group variables
       copy: 
         src: /opt/rpc-designate/playbooks/group_vars/designate_all.yml
         dest: /opt/rpc-openstack/group_vars/designate_all.yml
+      when: "{{ rpc_release | version_compare('r14', '>=') and rpc_release | version_compare('r15', '<=') }}"
       tags: 
         - designate_setup
 
+    - meta: refresh_inventory
+    
+    - name: Discover user secrets file [Pike]
+      stat: 
+        path: /etc/openstack_deploy/user_secrets.yml
+      register: secrets_file_pike
+
+    - name: Discover user secrets file [Newton]
+      stat:
+        path: /etc/openstack_deploy/user_osa_secrets.yml
+      register: secrets_file_newton
+      when: secrets_file_pike.stat.exists == false
+
+    - name: Discover user secrets file
+      set_fact:
+        secrets_file: "{{ secrets_file_pike if secrets_file_pike.stat.exists else secrets_file_newton }}"
+
     - name: Read user secrets file
-      shell: "grep '^[a-zA-Z]' /etc/openstack_deploy/user_osa_secrets.yml"
+      shell: "grep '^[a-zA-Z]' {{ secrets_file.stat.path }}"
       register: user_secrets
       tags: 
         - designate_setup
 
     - name: Add missing secrets
       lineinfile:
-        dest: "/etc/openstack_deploy/user_osa_secrets.yml"
+        dest: "{{ secrets_file.stat.path }}"
         line: "{{ item }}"
       with_items: "{{ secrets }}"
       when: user_secrets.stdout.find("{{ item }}") == -1
+      register: secrets_updated
       tags: 
         - designate_setup
 
     - name: Update password file
-      shell: /opt/rpc-openstack/openstack-ansible/scripts/pw-token-gen.py --file /etc/openstack_deploy/user_osa_secrets.yml
-  
+      shell: "{{ oa_dir }}/scripts/pw-token-gen.py --file {{ secrets_file.stat.path }}"
+      when: secrets_updated.changed
+
+    - name: Create designate_pools.yml
+      template: 
+        src: templates/designate_pools.yml.j2 
+        dest: /etc/openstack_deploy/designate_pools.yml
+
   vars:
     secrets:
       - "designate_service_password: "
       - "designate_rabbitmq_password: "
       - "designate_galera_password: "
-
+    oa_dir: "{{ lookup('env', 'OA_DIR') | default('/opt/openstack-ansible')}}"
