@@ -47,8 +47,8 @@ if [[ ! ${RE_JOB_IMAGE} =~ _snapshot$ ]]; then
     gate_deploy_pike
   ;;
   esac
-  
 fi
+
 
 # Install Designate
 cd ${MY_BASE_DIR}
