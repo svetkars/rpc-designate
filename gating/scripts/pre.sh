@@ -33,14 +33,14 @@ if [[ ! ${RE_JOB_IMAGE} =~ _snapshot$ ]]; then
   case $RE_JOB_SCENARIO in
   "newton")
     # Pin RPC-Release to 14.3 for newton
-    export RPC_RELEASE="r14.3.0"
+    export RPC_RELEASE=${RPC_NEWTON_RELEASE}
     export RPC_PRODUCT_RELEASE=${RE_JOB_SCENARIO}
     export OSA_BASE_DIR=${OS_BASE_DIR}/openstack-ansible
     clone_openstack
     gate_deploy_newton
   ;;
   "pike")
-    export RPC_RELEASE="r16.0.0"
+    export RPC_RELEASE=${RPC_PIKE_RELEASE}
     export RPC_PRODUCT_RELEASE=${RE_JOB_SCENARIO}
     export OSA_BASE_DIR=${OS_BASE_DIR}/openstack-ansible
     clone_openstack
@@ -48,7 +48,6 @@ if [[ ! ${RE_JOB_IMAGE} =~ _snapshot$ ]]; then
   ;;
   esac
 fi
-
 
 # Install Designate
 cd ${MY_BASE_DIR}

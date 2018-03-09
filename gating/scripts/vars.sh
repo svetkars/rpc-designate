@@ -41,3 +41,9 @@ export ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:--v}
 if [ ${RE_JOB_SCENARIO} == 'functional' ]; then
   export RE_JOB_SCENARIO="newton"
 fi
+
+# Pin the newton version of rpc-openstack
+export RPC_NEWTON_RELEASE="r14.3.0"
+
+# Pin the pike version of rpc-openstack
+export RPC_PIKE_RELEASE="r16.0.0"
