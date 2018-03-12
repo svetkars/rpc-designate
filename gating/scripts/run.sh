@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright 2014-2017 , Rackspace US, Inc.
+# Copyright 2014-2018 , Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,9 @@
 ## Shell Opts ----------------------------------------------------------------
 set -xeuo pipefail
 
-## Vars ----------------------------------------------------------------------
+## Vars and Functions --------------------------------------------------------
 source ${PWD}/gating/scripts/vars.sh
+source ${PWD}/gating/scripts/functions.sh
 
 ## Main ----------------------------------------------------------------------
 echo "Gate job started"
@@ -25,11 +26,27 @@ echo "+-------------------- START ENV VARS --------------------+"
 env
 echo "+-------------------- START ENV VARS --------------------+"
 
-# Run tests
-echo "RUN DESIGNATE. TESTS"
-openstack-ansible ${MY_BASE_DIR}/gating/scripts/test_designate.yml \
-                  -e working_dir=${MY_BASE_DIR} \
-                  -e rpc_release=${RPC_RELEASE} \
-                  ${ANSIBLE_PARAMETERS}
+# Setup a few variables specific to the scenario that we are running
+case $RE_JOB_SCENARIO in
+"newton")
+  # Run tests
+  export RPC_RELEASE="r14.3.0"
+  export RPC_PRODUCT_RELEASE=${RE_JOB_SCENARIO}
+  echo "RUN DESIGNATE. TESTS FOR NEWTON"
+  openstack-ansible ${MY_BASE_DIR}/gating/scripts/test_designate.yml \
+                    -e working_dir=${MY_BASE_DIR} \
+                    -e rpc_release=${RPC_RELEASE} \
+                    ${ANSIBLE_PARAMETERS}
+  ;;
+"pike")
+  export RPC_RELEASE="r16.0.0"
+  export RPC_PRODUCT_RELEASE=${RE_JOB_SCENARIO}
+  echo "RUN DESIGNATE. TESTS FOR PIKE"
+  openstack-ansible ${MY_BASE_DIR}/gating/scripts/test_designate.yml \
+                    -e working_dir=${MY_BASE_DIR} \
+                    -e rpc_release=${RPC_RELEASE} \
+                    ${ANSIBLE_PARAMETERS}
+  ;;
+esac
 
 echo "Gate job ended"
