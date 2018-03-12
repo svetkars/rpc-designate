@@ -26,7 +26,6 @@
         state: installed
       with_items:
         - "git"
-        - "bind9utils"
 
 - name: Install Designate Server
   hosts: designate_all
