@@ -36,7 +36,7 @@ function deploy_designate {
 function deploy_container {
     # build container
     cd ${OSA_BASE_DIR}/playbooks
-    openstack-ansible lxc-containers-create.yml --limit hosts:designate_all
+    openstack-ansible lxc-containers-create.yml --limit hosts:designate_all:designate_bind_all
     openstack-ansible openstack-hosts-setup.yml --tags openstack_hosts-config
     openstack-ansible repo-build.yml
 }

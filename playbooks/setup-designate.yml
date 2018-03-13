@@ -31,10 +31,14 @@
     
     - name: Install container definitions
       copy:
-        src: files/inventory/designate.yml
-        dest: /etc/openstack_deploy/env.d/designate.yml
+        src: ../files/inventory/{{ item }}
+        dest: /etc/openstack_deploy/env.d/{{ item }}
       tags: 
         - designate_setup
+        - bind_setup
+      with_items:
+        - designate.yml
+        - designate_bind.yml
 
     - name: Install container configuration
       template:

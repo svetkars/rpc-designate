@@ -14,7 +14,7 @@
 ---
 
 - name: Setup iptables rules for designate-mdns
-  hosts: designate_all
+  hosts: designate_bind_all
   tasks:
   - name: Install needed packages for firewall
     apt:
@@ -23,25 +23,15 @@
     delegate_to: "{{ physical_host }}"  
     when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
 
-  - name: Enable forwarding for port mdns server
-    iptables:
-      chain: FORWARD
-      in_interface: "{{ management_bridge }}"
-      protocol: udp
-      destination_port: 5354
-      ctstate: NEW,ESTABLISHED
-      jump: ACCEPT
-    delegate_to: "{{ physical_host }}"
-  
   - name: Define PREROUTING DNAT for mdns server
     iptables:
       table: nat
       chain: PREROUTING
-      in_interface: "{{ ansible_default_ipv4['interface'] }}"
+      in_interface: "{{ hostvars[physical_host]['ansible_default_ipv4']['interface'] }}"
       protocol: "{{ item }}"
-      destination_port: 5354
+      destination_port: 53
       jump: DNAT
-      to_destination: "{{ ansible_default_ipv4['address']}}"
+      to_destination: "{{ ansible_default_ipv4['address']}}:53"
     delegate_to: "{{ physical_host }}"
     with_items:
       - tcp

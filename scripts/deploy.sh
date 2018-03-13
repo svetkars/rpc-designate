@@ -44,8 +44,5 @@ deploy_designate
 # add service to haproxy
 openstack-ansible ${DESIGNATE_DEPLOY_OPS} haproxy-install.yml
 
-# install rndc key to designate containers
-openstack-ansible ${DESIGNATE_DEPLOY_OPS} /opt/rpc-designate/playbooks/install_rndc_key.yml
-
-# open ports for designate-mdns
-openstack-ansible ${DESIGNATE_DEPLOY_OPS} /opt/rpc-designate/playbooks/setup-infra-firewall-mdns.yml
+# open ports for designate-dns
+openstack-ansible ${DESIGNATE_DEPLOY_OPS} /opt/rpc-designate/playbooks/setup-infra-firewall-dns.yml
