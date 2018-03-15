@@ -38,8 +38,11 @@ function deploy_container {
     cd ${OSA_BASE_DIR}/playbooks
     openstack-ansible lxc-containers-create.yml --limit hosts:designate_all:designate_bind_all
     openstack-ansible openstack-hosts-setup.yml --tags openstack_hosts-config
-    openstack-ansible repo-build.yml
+    if [[ ${RPC_PRODUCT_RELEASE} == 'pike' ]]; then
+        openstack-ansible repo-build.yml
+    fi
 }
+
 
 function determine_release { 
     if [[ -z $RPC_RELEASE ]]; then
