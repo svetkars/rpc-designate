@@ -1,15 +1,15 @@
 # rpc-designate
 
-This integrated Newton Designate with Newton RPC-O.
+This repository simplifies the installation of Designate into RPC-O or OSA.
 
-In the future this repository might include script to update/remove things once RPC-O Pike is ready.
+## Deploying 
 
-To use this role you will need to follow the documentation for configuring the service and the required pools 
+Deploying to either and AIO or regular environment is the same process.
+For more detail please refer to the [INSTALLATION](INSTALLATION.md) file included in the repository.
 
-## Deploying to non AIO environment
-
-To deploy RPC-Designate to a non AIO environment please view the [INSTALLATION](INSTALLATION.md) file
-
+- Deploy OpenStack
+    - This can be done in a variety of ways either using rpc-openstack or using upstream OpenStack Ansible
+- Run the deployment script 
 ## Setup an AIO
 
 Update the host to the latest packages
