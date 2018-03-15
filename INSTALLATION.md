@@ -5,6 +5,7 @@ Table of Contents
 <!--ts-->
 - [Installation of RPC-Designate](#installation-of-rpc-designate)
 - [Table of Contents](#table-of-contents)
+- [<!--te-->](#te)
 - [Prerequisites](#prerequisites)
   - [Setup DNS Server](#setup-dns-server)
   - [Ports](#ports)
@@ -16,8 +17,17 @@ Table of Contents
     - [ns_records](#nsrecords)
     - [nameservers](#nameservers)
     - [targets](#targets)
-- [Deploy](#deploy)
 <!--te-->
+Installation
+=============
+
+The basic installation of Designate can be performed by running the scripts/deploy.sh script. The rest of the documentation remains for details on how to manually configure service. The deploy script will do the following:
+- Detect what version of OpenStack you are running against
+- Create containers for bind and for Designate on all infra hosts
+- Deploy bind and configure for use with Designate
+- Create a pool configuration "/etc/openstack_deploy/designate_pools.yml" to setup Designate to work with installed bind
+- Deploy Designate using default configuration
+- Configure firewall on infra hosts to allow communication to bind from infra IP address
 
 Prerequisites
 =============
@@ -127,11 +137,4 @@ Under the options you define the IP address, port and rndc information for the e
         rndc_host: 127.0.0.1
         rndc_port: 953
         rndc_key_file: /etc/designate/rndc.key
-```
-
-Deploy
-======
-Once all of the configuration files are in place the deployment script can be run to deploy Designate 
-```
-/opt/rpc-openstack/rpc-designate/scripts/deploy.sh
 ```
