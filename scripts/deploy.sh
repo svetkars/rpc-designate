@@ -33,10 +33,7 @@ fi
 # Perform peliminary configurations for Designate
 setup_designate 
 deploy_container
-# If we are running and AIO, deploy the local name server
-if [[ "${DEPLOY_AIO}" == "yes" ]]; then
-  deploy_bind
-fi
+deploy_bind
 
 # Install Designate
 deploy_designate
