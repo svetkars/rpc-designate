@@ -19,7 +19,27 @@ clone_openstack() {
   fi
 }
 
+gate_determine_branch() {
+  # Depending on the branch that we are using it could make a difference on what version version
+  # of openstack that we need to deploy against. The branch can be determined by looking at the 
+  # RE_JOB_BRANCH variable. If the RE_JOB_BRANCH is not set as in the PreMerge Jobs lets set a defult
+  # to use master as the branch as that would be were we are doing to development
+  export RE_JOB_BRANCH=${RE_JOB_BRANCH:-master}
+  if [ ${RE_JOB_BRANCH} == 'master' ]; then
+    export RPC_RELEASE=${RE_JOB_SCENARIO}
+  elif [ ${RE_JOB_BRANCH} == 'master-rc' ]; then
+    export RPC_RELEASE="${RE_JOB_SCENARIO}-rc"
+  fi
+}
+
 gate_deploy_pike() {
+  # As a gating requirement we need to make sure that the pyhon-yaml packages are installed
+  # so we can read the version of the release
+  dpkg-query -l python-yaml > /dev/null
+  if [[ $? -eq 1 ]]; then
+    apt-get -y install python-yaml
+  fi
+ 
   # for now we are just going to deploy using the deployment script
   cd ${OS_BASE_DIR}
   scripts/deploy.sh
