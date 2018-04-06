@@ -36,14 +36,3 @@ export ANSIBLE_ROLE_FETCH_MODE="git-clone"
 # To provide flexibility in the jobs, we have the ability to set any
 # parameters that will be supplied on the ansible-playbook CLI.
 export ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:--v}
-
-# If RE_JOB_SCENARIO is set to functional, we need to change it to newton
-if [ ${RE_JOB_SCENARIO} == 'functional' ]; then
-  export RE_JOB_SCENARIO="newton"
-fi
-
-# Pin the newton version of rpc-openstack
-export RPC_NEWTON_RELEASE="r14.3.0"
-
-# Pin the pike version of rpc-openstack
-export RPC_PIKE_RELEASE="r16.0.0"

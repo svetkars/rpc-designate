@@ -26,21 +26,26 @@ echo "+-------------------- START ENV VARS --------------------+"
 env
 echo "+-------------------- START ENV VARS --------------------+"
 
+
+
 # If we're not using a pre-saved rpc-openstack image, then deploy the
 # necessary OpenStack infrastructure and services.
 if [[ ! ${RE_JOB_IMAGE} =~ _snapshot$ ]]; then
 
+  # Install required prerequisites
+  apt-get -y install python-yaml
+
   case $RE_JOB_SCENARIO in
   "newton")
     # Pin RPC-Release to 14.3 for newton
-    export RPC_RELEASE=${RPC_NEWTON_RELEASE}
+    gate_determine_branch
     export RPC_PRODUCT_RELEASE=${RE_JOB_SCENARIO}
     export OSA_BASE_DIR=${OS_BASE_DIR}/openstack-ansible
     clone_openstack
     gate_deploy_newton
   ;;
   "pike")
-    export RPC_RELEASE=${RPC_PIKE_RELEASE}
+    gate_determine_branch
     export RPC_PRODUCT_RELEASE=${RE_JOB_SCENARIO}
     export OSA_BASE_DIR=${OS_BASE_DIR}/openstack-ansible
     clone_openstack
