@@ -22,13 +22,12 @@ fi
 
 function deploy_bind {
     openstack-ansible ${MY_BASE_DIR}/playbooks/setup-bind.yml
-    # export DESIGNATE_DEPLOY_OPS=${DESIGNATE_DEPLOY_OPS}"-e @/opt/rpc-designate/playbooks/files/aio/pools.yml.aio "
 }
 
 function deploy_designate {
     if [[ ${RPC_PRODUCT_RELEASE} == 'newton' ]]; then
         openstack-ansible ${DESIGNATE_DEPLOY_OPS} -e "designate_developer_mode=True" /opt/rpc-designate/playbooks/os-designate-install.yml
-    elif [[ ${RPC_PRODUCT_RELEASE} == 'pike' ]]; then
+    else 
         openstack-ansible ${DESIGNATE_DEPLOY_OPS} /opt/openstack-ansible/playbooks/os-designate-install.yml
     fi
 }
@@ -38,7 +37,7 @@ function deploy_container {
     cd ${OSA_BASE_DIR}/playbooks
     openstack-ansible lxc-containers-create.yml --limit hosts:designate_all:designate_bind_all
     openstack-ansible openstack-hosts-setup.yml --tags openstack_hosts-config
-    if [[ ${RPC_PRODUCT_RELEASE} == 'pike' ]]; then
+    if [[ ${RPC_PRODUCT_RELEASE} != 'newton' ]]; then
         openstack-ansible repo-build.yml
     fi
 }
