@@ -45,6 +45,19 @@ gate_deploy_pike() {
   scripts/deploy.sh
 }
 
+gate_deploy_queens() {
+  # As a gating requirement we need to make sure that the pyhon-yaml packages are installed
+  # so we can read the version of the release
+  dpkg-query -l python-yaml > /dev/null
+  if [[ $? -eq 1 ]]; then
+    apt-get -y install python-yaml
+  fi
+ 
+  # for now we are just going to deploy using the deployment script
+  cd ${OS_BASE_DIR}
+  scripts/deploy.sh
+}
+
 gate_deploy_newton() {
   # fixup a couple packages for keystone compatibility
   echo "python-ldap==2.5.2" >> ${OSA_BASE_DIR}/global-requirement-pins.txt

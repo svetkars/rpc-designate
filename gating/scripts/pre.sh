@@ -26,8 +26,6 @@ echo "+-------------------- START ENV VARS --------------------+"
 env
 echo "+-------------------- START ENV VARS --------------------+"
 
-
-
 # If we're not using a pre-saved rpc-openstack image, then deploy the
 # necessary OpenStack infrastructure and services.
 if [[ ! ${RE_JOB_IMAGE} =~ _snapshot$ ]]; then
@@ -37,7 +35,6 @@ if [[ ! ${RE_JOB_IMAGE} =~ _snapshot$ ]]; then
 
   case $RE_JOB_SCENARIO in
   "newton")
-    # Pin RPC-Release to 14.3 for newton
     gate_determine_branch
     export RPC_PRODUCT_RELEASE=${RE_JOB_SCENARIO}
     export OSA_BASE_DIR=${OS_BASE_DIR}/openstack-ansible
@@ -49,7 +46,15 @@ if [[ ! ${RE_JOB_IMAGE} =~ _snapshot$ ]]; then
     export RPC_PRODUCT_RELEASE=${RE_JOB_SCENARIO}
     export OSA_BASE_DIR=${OS_BASE_DIR}/openstack-ansible
     clone_openstack
-    gate_deploy_pike
+    gate_deploy_${RE_JOB_SCENARIO}
+  ;;
+  "queens")
+    gate_determine_branch
+    export RPC_PRODUCT_RELEASE=${RE_JOB_SCENARIO}
+    export RPC_RELEASE=master
+    export OSA_BASE_DIR=${OS_BASE_DIR}/openstack-ansible
+    clone_openstack
+    gate_deploy_${RE_JOB_SCENARIO}
   ;;
   esac
 fi
@@ -57,10 +62,5 @@ fi
 # Install Designate
 cd ${MY_BASE_DIR}
 ${MY_BASE_DIR}/scripts/deploy.sh
-
-# We may need this later, right now I don't run any tempest tests
-# install tempest
-#cd ${OS_BASE_DIR}/openstack-ansible/playbooks/
-#openstack-ansible  ${OS_BASE_DIR}/openstack-ansible/playbooks/os-tempest-install.yml
 
 echo "Pre gate job ended"

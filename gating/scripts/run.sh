@@ -30,21 +30,14 @@ echo "+-------------------- START ENV VARS --------------------+"
 case $RE_JOB_SCENARIO in
 "newton")
   # Run tests
-  export RPC_RELEASE="r14.3.0"
   export RPC_PRODUCT_RELEASE=${RE_JOB_SCENARIO}
   echo "RUN DESIGNATE. TESTS FOR NEWTON"
   openstack-ansible ${MY_BASE_DIR}/gating/scripts/test_designate.yml \
-                    -e working_dir=${MY_BASE_DIR} \
-                    -e rpc_release=${RPC_RELEASE} \
                     ${ANSIBLE_PARAMETERS}
   ;;
-"pike")
-  export RPC_RELEASE="r16.0.0"
+"pike"|"queens")
   export RPC_PRODUCT_RELEASE=${RE_JOB_SCENARIO}
-  echo "RUN DESIGNATE. TESTS FOR PIKE"
   openstack-ansible ${MY_BASE_DIR}/gating/scripts/test_designate.yml \
-                    -e working_dir=${MY_BASE_DIR} \
-                    -e rpc_release=${RPC_RELEASE} \
                     ${ANSIBLE_PARAMETERS}
   ;;
 esac
