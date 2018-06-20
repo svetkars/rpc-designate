@@ -2,6 +2,8 @@
 
 This repository simplifies the installation of Designate into RPC-O or OSA.
 
+![deployment model](doc/designate-model.png)
+
 ## Deploying 
 
 Deploying to either and AIO or regular environment is the same process.
