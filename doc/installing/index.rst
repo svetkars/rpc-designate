@@ -10,7 +10,7 @@ Designate Installation Guide
 .. You can define other variables in that file and use them throughout
    your documents.
 
-``rpc-designate`` simplifies installation of multi-tenant
+RPC Designate simplifies installation of multitenant
 DNS as a Service in the Rackspace Private Cloud powered
 by OpenStack (RPCO) and Rackspace
 Private Cloud powered by RedHat@ (RPCR) environments.

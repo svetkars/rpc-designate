@@ -3,10 +3,11 @@
 Prepare for designate installation
 ==================================
 
-Before deploying designate, you need to configure a few important components,
-including a DNS server, ports, and an Remote Name Daemon Control (RNDC)
+Before deploying RPC Designate, you need to configure a few
+important components, including a DNS server, ports, and
+a Remote Name Daemon Control (RNDC)
 key. Then, create a DNS servers pool as described in
-:ref:`configure-dns-server-pool` and then, run the designate
+:ref:`configure-dns-server-pool` and then, run the Designate
 deployment script.
 
 .. _setup-dns-backend:
@@ -14,9 +15,9 @@ deployment script.
 Set up a DNS backend
 ~~~~~~~~~~~~~~~~~~~~
 
-Although designate provides drivers to support different DNS
+Although Designate provides drivers to support different DNS
 backends, RPC supports BIND 9 only. You can either use an existing DNS
-deployment or set up new DNS nodes to work with designate.
+deployment or set up new DNS nodes to work with Designate.
 
 To set up a DNS backend, follow these steps:
 
@@ -27,7 +28,7 @@ To set up a DNS backend, follow these steps:
 
       allow-new-zones yes;
 
-#. Enable designate to communicate with BIND 9 by creating
+#. Enable Designate to communicate with BIND 9 by creating
    and configuring an ``rndc.key``:
 
    .. code-block:: bash
@@ -48,8 +49,8 @@ To set up a DNS backend, follow these steps:
 Configure network ports
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Designate must communicate bi-directionally with the
-infrastructure nodes that run the designate containers and
+Designate must communicate bidirectionally with the
+infrastructure nodes that run the Designate containers and
 the DNS servers.
 
 .. list-table:: **Port configuration**
@@ -74,13 +75,13 @@ the DNS servers.
        * 953/TCP
      -  DNS servers need the following ports to be open:
 
-        * 53/UDP -> Open for all traffic for DNS resolution
-        * 53/TCP -> Open for all traffic for DNS resolution
+        * 53/UDP -> Open for all traffic for DNS resolution.
+        * 53/TCP -> Open for all traffic for DNS resolution.
         * 953/TCP -> Used for RNDC commands, this only needs
           to be open to allow communication from the OpenStack
           infrastructure nodes.
 
-        OpenStack Infra nodes -> DNS
+        OpenStack Infra nodes -> DNS.
 
 .. _designate-rndc:
 
@@ -88,7 +89,11 @@ RNDC key
 ~~~~~~~~
 
 RNDC enables configuration for DNS servers with the BIND 9 backend.
-In different operating system the RNDC key file is either
+In different operating system, the RNDC key file is either created
+automatically or you need to manually generate it.
+
+The following table describes RNDC files locations and procedures for
+different operating systems.
 
 .. list-table:: **RNDC key file**
    :widths: 20 20
@@ -102,7 +107,7 @@ In different operating system the RNDC key file is either
    * - CentOS/RHEL
      - You need to generate the key file by using the ``rndc-confgen``
        command. This command creates the key file and places it in
-       the ``/etc`` directory
+       the ``/etc`` directory.
 
        .. code-block:: bash
 

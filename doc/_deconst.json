@@ -1,5 +1,5 @@
 {
-  "contentIDBase": "https://github.com/rackerlabs/docs-repo-template/user-guide/",
+  "contentIDBase": "https://github.com/rcbops/rpc-designate/master",
   "githubUrl": "https://github.com/rackerlabs/docs-repo-template/",
   "githubBranch": "master",
   "meta": {
