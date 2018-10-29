@@ -16,9 +16,8 @@ Markdown = "*"
 restructuredtext_lint = "*"
 Sphinx = "*"
 sphinx_rtd_theme = "*"
-pip = "==9.0.2"
 
 [dev-packages]
 
 [requires]
-python_version = "3.6"
+python_version = "3.7"
