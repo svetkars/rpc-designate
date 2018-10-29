@@ -17,14 +17,14 @@ can use GitHub Desktop or another GitHub GUI instead to accomplish the steps.
 2. Use the SSH URL for the forked repo to clone it to your local system:
 
     ```
-    git clone git@github.rackspace.com:my-github-username/docs-starter-kit.git
+    git clone git@github.rackspace.com:my-github-username/rpc-designate.git
     ```
 
 3. Track the upstream repo:
 
     ```
-    cd docs-starter-kit
-    git remote add --track master upstream git@github.com:rackerlabs/docs-SDP.git
+    cd rpc-designate
+    git remote add --track master upstream git@github.com:rcbops/rpc-designate.git
     ```
     Start new changes with the following steps.
 
@@ -65,14 +65,14 @@ can use GitHub Desktop or another GitHub GUI instead to accomplish the steps.
 
 10. Create a pull request (PR) to the upstream repo for your branch:
 
-    a. Go to https://github.rackspace.com/IX/docs-starter-kit.
+    a. Go to https://github.com/rcbops/rpc-designate
 
     b. Click the **Create pull request** button.
 
     c. If this PR is related to an outstanding
-      [GitHub issue](https://github.rackspace.com/IX/docs-starter-kit/issues), include a link to that GitHub issue in the comment.
+      [GitHub issue](https://github.com/rcbops/rpc-designate/issues), include a link to that GitHub issue in the comment.
 
-11. The Information Development team reviews your PR.
+11. Tag a member of the Information Development team in the PR.
 
 12. If necessary, incorporate changes from the review, and make updates to your PR by adding more commits:
 

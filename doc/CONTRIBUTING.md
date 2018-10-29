@@ -1,26 +1,19 @@
-# Contributor guidelines
+# Documentation contributor guidelines
 
-These guidelines provide the general process for maintaining source code for the instructions and templates in the docs-starter-kit repository (repo).
+These guidelines provide the general process for maintaining source code for the
+instructions in this repository (repo).
 
-- [Repo description](#repo-description)
+- [Documentation description](#documentation-description)
 - [Updating and adding content](#updating-and-adding-content)
 - [Using writing guidelines](#using-writing-guidelines)
 - [Submitting your content](#submitting-changes)
 - [Previewing changes](#previewing-changes)
 
-## Repo description
+## Documentation description
 
-This repo contains instructions and templates for use by those who want
-to create their own documentation repo.
-
--  Content for user guides and API guides  is written in
-   [reStructuredText](http://sphinx-doc.org/rest.html), which is the markup
-   syntax and parser component of [Python Docutils](http://docutils.sourceforge.net/index.html).
--  Content for How-To articles is written in
-   [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
-
-For more information about the contents of this repo and how to get started,
-see the [Docs Starter Kit User Guide] (https://pages.github.rackspace.com/IX/docs-starter-kit-user-guide).
+This repository includes the RPC Designate documentation that is written in
+[reStructuredText](http://sphinx-doc.org/rest.html), which is the markup
+syntax and parser component of [Python Docutils](http://docutils.sourceforge.net/index.html).
 
 ## Updating and adding content
 
@@ -39,7 +32,7 @@ To update existing source files or add new ones, follow the
 
 When you add or update content, use the writing and style guidelines
 in the [Style guidelines for technical content](http://rackerlabs.github.io/docs-rackspace/style-guide/index.html).
-Start with the guidelines in the [Quickstart](http://rackerlabs.github.io/docs-rackspace/style-guide/quickstart.html#quickstart)
+Start with the guidelines in the [QuickStart](http://rackerlabs.github.io/docs-rackspace/style-guide/quickstart.html#quickstart)
 section.
 
 ## Submitting changes
@@ -63,6 +56,15 @@ your changes in a staging environment. After the build process completes, a
 message displays in the PR comments with a link to the
 content in a staging environment.
 
-You can also build the project locally using the [Sphinx documentation
+You can also build the project locally by using the [Sphinx documentation
 generator](http://sphinx-doc.org/). For details, see
-[Building from source](https://github.com/rackerlabs/docs-rackspace/blob/master/doc/tools/build-from-source.rst).
+[Building from
+source](https://github.com/rackerlabs/docs-rackspace/blob/master/doc/tools/build-from-source.rst).
+
+Another easy way of building the documentation locally is to run ``tox``
+from the `docs` directory:
+
+```
+cd doc
+tox
+```

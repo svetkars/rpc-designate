@@ -3,7 +3,7 @@
 Configure a DNS server pool
 ===========================
 
-Designate supports multiple pools of DNS servers which enable network
+Designate supports multiple pools of DNS servers that enable network
 operators to scale networks as needed, as well as separate internal
 and external availability zones. Place the DNS server pool file
 ``designate_pool.yml``) in the OpenStack deploy directory.
@@ -38,7 +38,7 @@ the configuration file:
           - host: 127.0.0.1
             port: 53
 
-     - A list out all name servers to test against. The servers
+     - A list of all name servers to test against. The servers
        are used to confirm that the zone changes have been successfully
        applied.
    * - ``targets``
@@ -64,8 +64,9 @@ the configuration file:
             rndc_key_file: /etc/designate/rndc.key
 
      - The ``targets`` section is where you define the target name server on
-       which you perform actions. For each external DNS server, you need add
-       one of the following sections.
+       which you perform actions. For each external DNS server, define the
+       ``targets`` section with ``masters`` and ``options`` sections as
+       needed.
 
        Use type ``bind9`` in all configurations because that is the only
        currently supported option for RPC.

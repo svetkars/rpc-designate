@@ -1,4 +1,4 @@
-.. _desginate-ug:
+.. _designate-ug:
 
 ============================
 Designate Installation Guide
@@ -21,8 +21,8 @@ RPC and RPCR environments.
 .. toctree::
    :maxdepth: 2
 
-   common/common-front.rst
+   ../common/common-front.rst
    prepare-installation.rst
    configure-dns-server-pool.rst
    deploy-designate.rst
-   common/common-end.rst
+   ../common/common-end.rst
