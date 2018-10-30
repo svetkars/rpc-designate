@@ -1,7 +1,7 @@
 .. ifconfig:: internal
 
    ============================
-   RPC Designate documentation
+   RPC Designate Documentation
    ============================
 
    | **Last updated:** |today|
@@ -9,7 +9,7 @@
 
    RPC Designate simplifies installation of multitenant
    DNS as a Service in the Rackspace Private Cloud powered
-   by OpenStack (RPCO) and Rackspace
+   by OpenStack® (RPCO) and Rackspace
    Private Cloud powered by RedHat@ (RPCR) environments.
 
    This documentation describes how to install and configure
