@@ -269,14 +269,16 @@ html_show_copyright = True
 # html_file_suffix = None
 
 # SCVersioning.
-#scv_banner_greatest_tag = True
-scv_grm_exclude = ('.gitignore', '.nojekyll', 'README.rst')
-scv_show_banner = True
-#scv_banner_recent_tag = True
-svc_banner_main_ref = 'master'
-scv_sort = ('semver', 'time')
+scv_banner_greatest_tag = True
 scv_root_ref = 'master'
-svc_priority = 'branches'
+scv_overflow = ('-q', )
+scv_show_banner = True
+scv_banner_main_ref = 'master'
+scv_whitelist_branches = ("master")
+
+scv_push_remote = 'internal'
+scv_grm_exclude = ('.nojekyll', '.gitignore')
+scv_banner_recent_tag = False
 
 def setup(app):
     """Create the internal config value and set to False."""

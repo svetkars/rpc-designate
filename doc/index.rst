@@ -1,24 +1,27 @@
-.. _index-xxx-ug:
+.. ifconfig:: internal
 
-============================
-Designate Installation Guide
-============================
+   ============================
+   RPC Designate documentation
+   ============================
 
-*Last updated:* |today|
+   | **Last updated:** |today|
+   | **Release:** |release|
 
-.. Define |product name| in conf.py
-.. You can define other variables in that file and use them throughout
-   your documents.
+   RPC Designate simplifies installation of multitenant
+   DNS as a Service in the Rackspace Private Cloud powered
+   by OpenStack (RPCO) and Rackspace
+   Private Cloud powered by RedHat@ (RPCR) environments.
 
-RPC Designate simplifies installation of multitenant
-DNS as a Service in the Rackspace Private Cloud powered
-by OpenStack (RPCO) and Rackspace
-Private Cloud powered by RedHat@ (RPCR) environments.
-This document is intended for Rackspace deployment and support engineers
-who need to install, configure, and operate OpenStack designate in
-RPCO and RPCR environments.
+   This documentation describes how to install and configure
+   RPC Designate.
 
-.. toctree::
-   :maxdepth: 2
+   **Internal documents**
 
-   installing/index.rst
+   - :ref:`designate-ig`
+
+   .. toctree::
+      :hidden:
+      :caption: Internal documents
+      :maxdepth: 2
+
+      internal/installing/index.rst
