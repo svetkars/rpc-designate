@@ -224,7 +224,15 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ['_static']
+html_static_path = ['_static']
+
+html_context = {
+    'css_files': [
+        '_static/theme_overrides.css',  # overrides wide tables in RTD theme
+        '_static/bespoke.css',  # custom CSS styling
+        '_static/bolditalic.css',  # bolditalic styling
+        ],
+    }
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -269,13 +277,12 @@ html_show_copyright = True
 # html_file_suffix = None
 
 # SCVersioning.
-scv_banner_greatest_tag = True
+#scv_banner_greatest_tag = True
 scv_root_ref = 'master'
 scv_overflow = ('-q', )
 scv_show_banner = True
 scv_banner_main_ref = 'master'
-scv_whitelist_branches = ("master")
-
+scv_whitelist_branches = ('master')
 scv_push_remote = 'internal'
 scv_grm_exclude = ('.nojekyll', '.gitignore')
 scv_banner_recent_tag = False
