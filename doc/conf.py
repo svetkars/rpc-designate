@@ -282,10 +282,11 @@ scv_root_ref = 'master'
 scv_overflow = ('-q', )
 scv_show_banner = True
 scv_banner_main_ref = 'master'
-scv_whitelist_branches = ('master')
+scv_whitelist_branches = (re.compile(r"\bmaster\b"),)
 scv_push_remote = 'internal'
 scv_grm_exclude = ('.nojekyll', '.gitignore')
 scv_banner_recent_tag = False
+scv_whitelist_tags = ('NIL', )
 
 def setup(app):
     """Create the internal config value and set to False."""
