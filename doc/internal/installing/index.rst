@@ -1,4 +1,4 @@
-.. _designate-ug:
+.. _designate-ig:
 
 ============================
 Designate Installation Guide
