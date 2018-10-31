@@ -109,6 +109,9 @@ except TypeError:
 
 version = '{}'.format(formatted)
 
+# The full version, including alpha/beta/rc tags.
+release = version
+
 # Global variables that are replaced by the specified value during the build
 # process.
 
