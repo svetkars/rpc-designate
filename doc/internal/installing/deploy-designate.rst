@@ -8,6 +8,8 @@ After you complete the steps described in
 :ref:`configure-dns-server-pool`, you can deploy Designate in your
 RPCO or RPCR environment.
 
+If you need to deploy an AIO environment, see :ref:`deploy-aio`.
+
 Deploy RPC Designate by running the
 ``scripts/deploy.sh`` script that is stored in this repository.
 The deploy script performs the following actions:

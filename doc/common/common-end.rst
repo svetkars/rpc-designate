@@ -13,5 +13,5 @@ The most recent releases are listed in the following table:
 
    * - Revision date
      - Release
-   * - TBA
-     - |product name| vN release
+   * - October 31, 2018
+     - |product name| 1.0.0
