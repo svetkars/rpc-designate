@@ -22,7 +22,9 @@ RPC and RPCR environments.
    :maxdepth: 2
 
    ../../common/common-front.rst
+   overview.rst
    prepare-installation.rst
    configure-dns-server-pool.rst
    deploy-designate.rst
+   deploy-aio.rst
    ../../common/common-end.rst
